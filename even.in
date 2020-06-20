@@ -1,0 +1,5 @@
+tape 1111
+start q0
+transition q0 1 q1 1 R
+transition q1 1 q0 1 R
+transition q1 0 q1 0 R
