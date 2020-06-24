@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"bufio"
 	"fmt"
 	"log"
@@ -10,7 +10,7 @@ import(
 
 // Tape class
 type Tape struct {
-	index uint32
+	index   uint32
 	content []string
 }
 
@@ -23,7 +23,7 @@ func (t *Tape) Write(b string) {
 }
 
 func (t *Tape) Left() {
-	if (t.index <= 0) {
+	if t.index <= 0 {
 		// log.Fatalf("You moved off the tape lmao")
 		return
 	}
@@ -31,7 +31,7 @@ func (t *Tape) Left() {
 }
 
 func (t *Tape) Right() {
-	if (t.index + 1 >= uint32(len(t.content))) {
+	if t.index+1 >= uint32(len(t.content)) {
 		t.content = append(t.content, "0")
 	}
 	t.index++
@@ -39,14 +39,14 @@ func (t *Tape) Right() {
 
 // Transition struct
 type Transition struct {
-	state string
-	write string
+	state     string
+	write     string
 	direction string
 }
 
 // Transition Conditions
 type TransitionCondition struct {
-	state string
+	state      string
 	tapeSymbol string
 }
 
@@ -69,11 +69,15 @@ func main() {
 
 	for scanner.Scan() {
 		line := strings.Fields(scanner.Text())
-		if (len(line) == 0) { continue }
+		if len(line) == 0 {
+			continue
+		}
 
 		switch {
 		case line[0] == "tape":
-			if (len(line) != 2) { log.Fatalf("You provided an incorrect number of arguments for your tape") } 
+			if len(line) != 2 {
+				log.Fatalf("You provided an incorrect number of arguments for your tape")
+			}
 			input := []string{}
 			for _, c := range line[1] {
 				input = append(input, string(c))
@@ -82,8 +86,12 @@ func main() {
 			// fmt.Println(tape)
 
 		case line[0] == "transition":
-			if (len(line) != 6) { log.Fatalf("You provided an incorrect number of arguments for a transition function") }
-			if (!(line[5] == "R" || line[5] == "L" || line[5] == "N")) { log.Fatalf("You provided an invalid direction \"%v\"", line[5]) }
+			if len(line) != 6 {
+				log.Fatalf("You provided an incorrect number of arguments for a transition function")
+			}
+			if !(line[5] == "R" || line[5] == "L" || line[5] == "N") {
+				log.Fatalf("You provided an invalid direction \"%v\"", line[5])
+			}
 			transitionFunctions[TransitionCondition{line[1], line[2]}] = Transition{line[3], line[4], line[5]}
 
 		case line[0] == "start":
@@ -108,8 +116,8 @@ func main() {
 	fmt.Println()
 
 	for {
-		transition, hasKey := transitionFunctions[TransitionCondition{machineState, tape.Read()}];
-		if (!hasKey) {
+		transition, hasKey := transitionFunctions[TransitionCondition{machineState, tape.Read()}]
+		if !hasKey {
 			fmt.Println("Computation complete, your tape writes\n", tape.content)
 			return
 		}
