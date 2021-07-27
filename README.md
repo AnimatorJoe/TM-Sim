@@ -11,7 +11,7 @@ To create your own machine, create a text file with the fields `tape`, `transiti
 You can tell the script which file to read from by changing this line
 
 ```go
-file, err  := os.Open("doubler.in") // <-- change this file to run a different machine
+file, err := os.Open("doubler.in") // <-- change this file to run a different machine
 ```
 
 ### Defining an Initial State
